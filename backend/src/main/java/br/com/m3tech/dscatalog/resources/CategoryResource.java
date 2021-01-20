@@ -1,6 +1,5 @@
 package br.com.m3tech.dscatalog.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
