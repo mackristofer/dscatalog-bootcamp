@@ -29,16 +29,15 @@ public class ProductResource {
 	private ProductService service;
 
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		
+
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		
+
 		Page<ProductDTO> list = service.findAllPaged(pageRequest);
-		
+
 		return ResponseEntity.ok(list);
 	}
 
@@ -55,21 +54,19 @@ public class ProductResource {
 		return ResponseEntity.created(uri).body(dto);
 
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
-		
+
 		return ResponseEntity.ok(dto);
 
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> delete(@PathVariable Long id) {
 		service.delete(id);
-		
-		return ResponseEntity.noContent().build()
-;	}
 
-
+		return ResponseEntity.noContent().build();
+	}
 }
