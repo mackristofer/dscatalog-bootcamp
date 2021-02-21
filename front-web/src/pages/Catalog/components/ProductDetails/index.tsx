@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ReactComponent as ArrowIcon } from '../../../../core/assets/images/arrow.svg';
-import ProductPrice from '../../../../core/components/ProductPrice';
-import { Product } from '../../../../core/types/Product';
-import { makeRequest } from '../../../../core/utils/request';
+import { ReactComponent as ArrowIcon } from 'core/assets/images/arrow.svg';
+import ProductPrice from 'core/components/ProductPrice';
+import { Product } from 'core/types/Product';
+import { makeRequest } from 'core/utils/request';
 import ProductDescriptionLoader from '../Loaders/ProductDescriptionLoader';
 import ProductInfoLoader from '../Loaders/ProductInfoLoader';
 import './styles.scss';
@@ -52,7 +52,7 @@ const ProductDetails = () => {
                             <>
                                 <h1 className="product-description-title">
                                     Descrição do produto
-                        </h1>
+                                </h1>
                                 <p className="product-description-text">
                                     {product?.description}
                                 </p>
