@@ -6,16 +6,19 @@ import './styles.scss';
 import { makeRequest } from 'core/utils/request';
 import { ProductsResponse } from 'core/types/Product';
 import ProductCardLoader from './components/Loaders/ProductCardLoader';
+import Pagination from 'core/components/Pagination';
 
 const Catalog = () => {
 
    const [productsReponse, setProductsResponse] = useState<ProductsResponse>();
    const [isLoading, setIsLoading] = useState(false);
+   const [activePage, setActivePage] = useState(0);
+
    console.log(productsReponse);
    useEffect(() => {
       const params = {
-         page: 0,
-         linesPerPage: 10
+         page: activePage,
+         linesPerPage: 12
       }
 
       setIsLoading(true);
@@ -25,7 +28,7 @@ const Catalog = () => {
             setIsLoading(false);
          })
 
-   }, []);
+   }, [activePage]);
    return (
       <div className="catalog-container">
          <h1 className="catalog-title">Catálogo de produtos</h1>
@@ -39,6 +42,13 @@ const Catalog = () => {
             )}
 
          </div>
+         {productsReponse && (
+         <Pagination 
+         totalPages={productsReponse.totalPages}
+         activePage={activePage}
+         onChange={page => setActivePage(page)}
+         />
+         )}
       </div>
    );
 }
