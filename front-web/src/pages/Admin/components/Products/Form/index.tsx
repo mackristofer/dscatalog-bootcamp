@@ -1,35 +1,44 @@
+import { makeRequest } from 'core/utils/request';
 import React, { useState } from 'react';
 import BaseForm from '../../BaseForm';
 import './styles.scss';
 
+type FormState = {
+    name: string;
+    price: string;
+    category: string;
+    description:string;
+}
+
+type FormEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
 const Form = () => {
 
-    const [name, setName] = useState('');
+    const [formData, setFormData] = useState<FormState>({
+        name:'',
+        price:'',
+        category:'3',
+        description:''
+    });
 
-    const handleOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value);
-    }
-
-    const [price, setPrice] = useState('');
-
-    const handleOnChangePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPrice(event.target.value);
-    }
-
-    const [category, setCategory] = useState('');
-
-    const handleOnChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setCategory(event.target.value);
+    const handleOnChange = (event: FormEvent) => {
+       const name = event.target.name;
+       const value = event.target.value;
+       
+        setFormData(data => ({...data, [name]:value}));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const payload = {
-            name,
-            price,
-
+            ...formData,
+            imgUrl:'https://images-americanas.b2w.io/produtos/01/00/img/44285/6/44285667_1GG.jpg',
+            categories:[{id: formData.category}]
         }
-        console.log(payload);
+
+        makeRequest({url:'/products', method:'POST', data:payload})
+        .then(()=>{
+            setFormData({name:'', price:'', category:'', description:''})
+        });
     }
 
     return (
@@ -38,25 +47,42 @@ const Form = () => {
                 <div className="row">
                     <div className="col-6">
                         <input
-                            value={name}
+                            value={formData.name}
+                            name="name"
                             type="text"
                             className="form-control mb-5 mt-5"
-                            onChange={handleOnChangeName}
+                            onChange={handleOnChange}
                             placeholder="Nome do produto"
                         />
-                        <select value={category} className="form-control mb-5" onChange={handleOnChangeCategory}>
-                            <option value={"book"}>Book</option>
-                            <option value={"eletronics"}>Eletronics</option>
-                            <option value={"computers"}>Computers</option>
+                        <select 
+                        value={formData.category} 
+                        className="form-control mb-5" 
+                        onChange={handleOnChange}
+                        name="category"
+                        >
+                            <option value={"1"}>Book</option>
+                            <option value={"2"}>Eletronics</option>
+                            <option value={"3"}>Computers</option>
                             <option value={"ebook"}>e-Book</option>
                         </select>
 
                         <input
-                            value={price}
+                            value={formData.price}
                             type="text"
                             className="form-control"
-                            onChange={handleOnChangePrice}
+                            onChange={handleOnChange}
                             placeholder="Preço"
+                            name="price"
+                        />
+                    </div>
+                    <div className="col-6">
+                        <textarea 
+                        className="form-control"
+                        name="description" 
+                        onChange={handleOnChange}
+                        cols={30} 
+                        rows={10} 
+                        value={formData.description}
                         />
                     </div>
                 </div>
