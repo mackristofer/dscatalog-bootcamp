@@ -1,5 +1,8 @@
 package br.com.m3tech.dscatalog.dto;
 
+import br.com.m3tech.dscatalog.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO{
 
 	private static final long serialVersionUID = 1L;
