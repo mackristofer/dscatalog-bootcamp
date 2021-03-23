@@ -1,5 +1,6 @@
 package br.com.m3tech.dscatalog.services;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.m3tech.dscatalog.dto.CategoryDTO;
 import br.com.m3tech.dscatalog.dto.ProductDTO;
+import br.com.m3tech.dscatalog.dto.UriDTO;
 import br.com.m3tech.dscatalog.entities.Category;
 import br.com.m3tech.dscatalog.entities.Product;
 import br.com.m3tech.dscatalog.repositories.CategoryRepository;
@@ -26,6 +29,8 @@ import br.com.m3tech.dscatalog.services.exceptions.ResourceNotFoundException;
 @Service
 public class ProductService {
 
+	@Autowired
+	private S3Service s3Service;
 	@Autowired
 	private ProductRepository repository;
 	@Autowired
@@ -94,6 +99,11 @@ public class ProductService {
 			entity.getCategories().add(category);
 		}
 		
+	}
+
+	public UriDTO uploadFile(MultipartFile file) {
+		URL url = s3Service.uploadFile(file);
+		return new UriDTO(url.toString());
 	}
 
 }
